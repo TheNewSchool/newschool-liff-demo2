@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>NewSchool 聯絡我們</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    textarea { width: 100%; height: 150px; font-size: 16px; padding: 10px; }
+    button { margin-top: 15px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>請填寫以下資訊後送出</h2>
+  <textarea id="msgInput">學生是否為新派學員: 
+學生中英文姓名: 
+新派班級名稱: 
+就讀學校+年級:</textarea>
+  <button id="sendBtn">送出</button>
+
+  <script>
+    const liffId = "2007735289-25q5Vo6L";
+
+    async function main() {
+      await liff.init({ liffId });
+
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      }
+
+      document.getElementById('sendBtn').addEventListener('click', () => {
+        const text = document.getElementById('msgInput').value;
+        if (!text.trim()) {
+          alert('請輸入內容');
+          return;
+        }
+        liff.sendMessages([{
+          type: 'text',
+          text: text
+        }]).then(() => {
+          alert('訊息已送出，謝謝！');
+          liff.closeWindow();
+        }).catch((err) => {
+          alert('傳送失敗: ' + err.message);
+        });
+      });
+    }
+
+    main();
+  </script>
+</body>
+</html>
